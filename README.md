@@ -1,22 +1,19 @@
-ThinkAdmin for PHP
+Tp-admin
 --
-* ThinkAdmin 是一个基于 Thinkphp 5.0.x 开发的后台管理系统，集成后台系统常用功能。
+* Tp-admin 是一个基于 Thinkphp 5.0.x 开发的后台管理系统，集成后台系统常用功能,其原型是zoujingli的项目ThinkAdmin。
 * 项目安装及二次开发请参考 ThinkPHP 官方文档及下面的服务环境说明，数据库 sql 文件存放于项目根目录下。
 > 注意：项目测试请另行搭建环境并创建数据库（数据库配置 application/database.php）, 切勿直接使用测试环境数据！
 
 
 Documentation
 --
-PHP开发技术交流（QQ群 513350915）
-
-[![PHP微信开发群 (SDK)](http://pub.idqqimg.com/wpa/images/group.png)](http://shang.qq.com/wpa/qunwpa?idkey=ae25cf789dafbef62e50a980ffc31242f150bc61a61164458216dd98c411832a) 
+PHP开发技术交流（QQ群 暂无）如有问题可以直接QQ2398156504
 
 
 Repositorie
 --
- ThinkAdmin 为开源项目，允许把它用于任何地方，不受任何约束，欢迎 fork 项目。
->* GitHub 托管地址：https://github.com/zoujingli/ThinkAdmin
->* OSChina 托管地址：http://git.oschina.net/zoujingli/Think.Admin
+ Tp-admin 为开源项目，允许把它用于任何地方，不受任何约束，欢迎 fork 项目。
+
 
 
 Module
@@ -100,8 +97,11 @@ Copyright
 --
 * ThinkAdmin 基于`MIT`协议发布，任何人可以用在任何地方，不受约束
 * ThinkAdmin 部分代码来自互联网，若有异议，可以联系作者进行删除
+* 核心部分版权请遵循其对应的版权声明，波波添加修改部分则随意使用，波波本人也不在意版权问题。
 
 
 Sponsor
 --
+*这是ThinkAdmin项目的赞助方式，大家喜欢的可以对其赞助，波波本人也不需任何赞助。
+
 ![赞助](http://zoujingli.oschina.io/static/pay.png)
