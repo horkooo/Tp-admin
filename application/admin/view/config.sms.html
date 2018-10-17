@@ -1,0 +1,132 @@
+{extend name="extra@admin/content"}
+
+{block name="content"}
+<form onsubmit="return false;" action="__SELF__" data-auto="true" method="post" class='form-horizontal layui-form' style='padding-top:20px'>
+
+    <div class="form-group">
+        <label class="col-sm-2 control-label label-required">Sms Server<span class="nowrap">(短信服务商)</span></label>
+        <div class='col-sm-8'>
+            <label class="think-radio">
+                <!--{if sysconf('sms_type') eq 'juhe'}-->
+                <input checked type="radio" name="sms_type" value="juhe" title="聚合短信" lay-ignore>
+                <!--{else}-->
+                <input type="radio" name="sms_type" value="juhe" title="聚合短信" lay-ignore>
+                <!--{/if}-->
+                聚合短信
+            </label>
+            <label class="think-radio">
+                <!--{if sysconf('sms_type') eq 'aliyun'}-->
+                <input checked type="radio" name="sms_type" value="aliyun" title="阿里大鱼" lay-ignore>
+                <!--{else}-->
+                <input type="radio" name="sms_type" value="aliyun" title="阿里大鱼" lay-ignore>
+                <!--{/if}-->
+                阿里云
+            </label>
+            <label class="think-radio">
+                <!--{if sysconf('sms_type') eq 'zhutong'}-->
+                <input checked type="radio" name="sms_type" value="zhutong" title="上海助通" lay-ignore>
+                <!--{else}-->
+                <input type="radio" name="sms_type" value="zhutong" title="上海助通" lay-ignore>
+                <!--{/if}-->
+                上海助通
+            </label>
+            <div class="help-block" data-storage-type="juhe">
+                若还没有聚合短信帐号，请点击
+                <a target="_blank" href="https://www.juhe.cn/">免费申请</a>
+            </div>
+            <div class="help-block" data-storage-type="aliyun">
+                若还没有阿里云帐号，请点击
+                <a target="_blank" href="https://www.aliyun.com/">免费注册</a>
+            </div>
+            <div class="help-block" data-storage-type="zhutong">
+                若还没有助通短信帐号，请联系我们。
+            </div>
+        </div>
+    </div>
+
+    <div class="hr-line-dashed" data-storage-type="aliyun"></div>
+    <div class="hr-line-dashed" data-storage-type="zhutong"></div>
+
+
+    <div class="form-group" data-storage-type="juhe">
+        <label class="col-sm-2 control-label">聚合KEY <span class="nowrap">(appKey)</span></label>
+        <div class='col-sm-8'>
+            <input type="text" name="sms_juhe_appkey" required="required" value="{:sysconf('sms_juhe_appkey')}"
+                   title="请输入申请的APPKEY" placeholder="请输入申请的APPKEY" class="layui-input">
+            <p class="help-block"></p>
+        </div>
+    </div>
+
+    <div class="form-group" data-storage-type="aliyun">
+        <label class="col-sm-2 control-label">AccessKeyId<span class="nowrap">(appkey)</span></label>
+        <div class='col-sm-8'>
+            <input type="text" name="sms_aliyun_appid" required="required" value="{:sysconf('sms_aliyun_appid')}"
+                   title="请输入阿里云AccessKeyId" placeholder="请输入阿里云AccessKeyId" class="layui-input">
+            <p class="help-block"></p>
+        </div>
+    </div>
+
+    <div class="form-group" data-storage-type="aliyun">
+        <label class="col-sm-2 control-label">AccessKeySecret <span class="nowrap">(appsecret)</span></label>
+        <div class='col-sm-8'>
+            <input type="text" name="sms_aliyun_appsecret" required="required" value="{:sysconf('sms_aliyun_appsecret')}"
+                   title="请输入阿里云AccessKeySecret" placeholder="请输入阿里云AccessKeySecret" class="layui-input">
+            <p class="help-block"></p>
+        </div>
+    </div>
+    <div class="form-group" data-storage-type="aliyun">
+        <label class="col-sm-2 control-label">SignName <span class="nowrap">(短信签名)</span></label>
+        <div class='col-sm-8'>
+            <input type="text" name="sms_aliyun_signname" required="required" value="{:sysconf('sms_aliyun_signname')}"
+                   title="请输入短信签名" placeholder="请输入短信签名" class="layui-input">
+            <p class="help-block"></p>
+        </div>
+    </div>
+
+
+    <div class="form-group" data-storage-type="zhutong">
+        <label class="col-sm-2 control-label">Account <span class="nowrap">(登录账号)</span></label>
+        <div class='col-sm-8'>
+            <input type="text" name="sms_zhutong_account" required="required" value="{:sysconf('sms_zhutong_account')}"
+                   title="请输入助通短信登录账号" placeholder="请输入助通短信登录账号" class="layui-input">
+            <p class="help-block"></p>
+        </div>
+    </div>
+
+    <div class="form-group" data-storage-type="zhutong">
+        <label class="col-sm-2 control-label">Password <span class="nowrap">(登录密码)</span></label>
+        <div class='col-sm-8'>
+            <input type="text" name="sms_zhutong_passwd" required="required" value="{:sysconf('sms_zhutong_passwd')}"
+                   title="请输入助通短信登录密码" placeholder="请输入助通短信登录密码" class="layui-input">
+            <p class="help-block"></p>
+        </div>
+    </div>
+
+    <div class="hr-line-dashed"></div>
+
+    <div class="col-sm-4 col-sm-offset-2">
+        <div class="layui-form-item text-center">
+            <button class="layui-btn" type="submit">保存配置</button>
+        </div>
+    </div>
+
+</form>
+{/block}
+
+{block name="script"}
+<script>
+    (function () {
+        window.form.render();
+        buildForm('{:sysconf("sms_type")}');
+        $('[name=sms_type]').on('click', function () {
+            buildForm($('[name=sms_type]:checked').val())
+        });
+
+        // 表单显示编译
+        function buildForm(value) {
+            var $tips = $("[data-storage-type='" + value + "']");
+            $("[data-storage-type]").not($tips.show()).hide();
+        }
+    })();
+</script>
+{/block}

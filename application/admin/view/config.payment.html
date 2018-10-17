@@ -1,0 +1,151 @@
+{extend name="extra@admin/content"}
+
+{block name="content"}
+<div class="layui-tab layui-tab-brief" lay-filter="docDemoTabBrief">
+    <ul class="layui-tab-title">
+        <li class="layui-this">支付宝</li>
+        <li>微信</li>
+        <li>银联</li>
+        <li>其他</li>
+    </ul>
+    <div class="layui-tab-content" style="height: 100px;">
+        <!-- 支付宝配置-->
+        <div class="layui-tab-item layui-show">
+            <form class="layui-form layui-box" style='padding:25px 30px 20px 0' action="__SELF__" data-auto="true" method="post">
+                <div class="layui-form-item">
+                    <label class="layui-form-label">开启</label>
+                    <div class="layui-input-block">
+                        <input type="checkbox" {if sysconf('alipay_status') eq 1}checked=""{/if}lay-skin="switch" lay-text="ON|OFF" lay-filter="switchtest">
+                        <input name="alipay_status" value="{:sysconf('alipay_status')}" type="hidden" class="paystatus"/>
+                    </div>
+                </div>
+                <div class="layui-form-item">
+                    <label class="layui-form-label">APPID</label>
+                    <div class="layui-input-block">
+                        <input name="alipay_appid" value="{:sysconf('alipay_appid')}" required="required" title="请输入支付宝PID" placeholder="请输入支付宝PID" class="layui-input">
+                    </div>
+                </div>
+                <div class="layui-form-item">
+                    <label class="layui-form-label">异步回调</label>
+                    <div class="layui-input-block">
+                        <input name="alipay_notify_url" value="{:sysconf('alipay_notify_url')}" required="required" title="请输入支付宝PID" placeholder="请输入支付宝PID" class="layui-input">
+                    </div>
+                </div>
+                <div class="layui-form-item">
+                    <label class="layui-form-label">同步回调</label>
+                    <div class="layui-input-block">
+                        <input name="alipay_notify_url" value="{:sysconf('alipay_notify_url')}" required="required" title="请输入支付宝PID" placeholder="请输入支付宝PID" class="layui-input">
+                    </div>
+                </div>
+                <div class="layui-form-item">
+                    <label class="layui-form-label">加密公钥</label>
+                    <div class="layui-input-block">
+                        <textarea name="alipay_public_key" placeholder="请输入复制公钥主体部分粘贴此处" class="layui-textarea">{:sysconf('alipay_public_key')}</textarea>
+                    </div>
+                </div>
+                <div class="layui-form-item">
+                    <label class="layui-form-label">加密私钥</label>
+                    <div class="layui-input-block">
+                        <textarea name="alipay_private_key" placeholder="请输入复制私钥主体部分粘贴此处" class="layui-textarea">{:sysconf('alipay_private_key')}</textarea>
+                    </div>
+                </div>
+
+                <div class="hr-line-dashed"></div>
+
+                <div class="layui-form-item text-center">
+                    <button class="layui-btn" type='submit'>保存数据</button>
+                    <button class="layui-btn layui-btn-danger" type='button' data-confirm="确定要取消编辑吗？" data-close>取消编辑</button>
+                </div>
+            </form>
+        </div>
+        <!-- 微信配置-->
+        <div class="layui-tab-item">
+            <div class="layui-tab-item layui-show">
+                <form class="layui-form layui-box" style='padding:25px 30px 20px 0' action="__SELF__" data-auto="true" method="post">
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">开启</label>
+                        <div class="layui-input-block">
+                            <input type="checkbox" {if sysconf('wxpay_status') eq 1}checked=""{/if}lay-skin="switch" lay-text="ON|OFF" lay-filter="switchtest">
+                            <input name="wxpay_status" value="{:sysconf('wxpay_status')}" type="hidden" class="paystatus"/>
+                        </div>
+                    </div>
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">APPID</label>
+                        <div class="layui-input-block">
+                            <input name="wxpay_appid" value="{:sysconf('wxpay_appid')}" title="请输入微信APPID" placeholder="请输入微信APPID(用于APP支付)" class="layui-input">
+                        </div>
+                    </div>
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">APP_ID</label>
+                        <div class="layui-input-block">
+                            <input name="wxpay_app_id" value="{:sysconf('wxpay_app_id')}" required="required" title="请输入公众号APPID" placeholder="请输入公众号APPID" class="layui-input">
+                        </div>
+                    </div>
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">MiniApp</label>
+                        <div class="layui-input-block">
+                            <input name="wxpay_miniapp_id" value="{:sysconf('wxpay_miniapp_id')}" title="请输入小程序APPID" placeholder="请输入小程序APPID" class="layui-input">
+                        </div>
+                    </div>
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">商户ID</label>
+                        <div class="layui-input-block">
+                            <input name="wxpay_mch_id" value="{:sysconf('wxpay_mch_id')}" required="required" title="请输入商户ID" placeholder="请输入商户ID" class="layui-input">
+                        </div>
+                    </div>
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">支付密钥</label>
+                        <div class="layui-input-block">
+                            <input name="wxpay_key" value="{:sysconf('wxpay_key')}" required="required" title="请输入支付密钥" placeholder="请输入支付密钥" class="layui-input">
+                        </div>
+                    </div>
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">通知回调</label>
+                        <div class="layui-input-block">
+                            <input name="wxpay_notify_url" value="{:sysconf('wxpay_notify_url')}" required="required" title="通知回调地址" placeholder="通知回调地址" class="layui-input">
+                        </div>
+                    </div>
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">CERT证书</label>
+                        <div class="layui-input-block">
+                            <input name="wxpay_cert_client" value="{:sysconf('wxpay_cert_client')}"  title="退款时需要上传" placeholder="格式:./cert/apiclient_cert.pem" class="layui-input">
+                        </div>
+                    </div>
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">KEY证书</label>
+                        <div class="layui-input-block">
+                            <input name="wxpay_cert_key" value="{:sysconf('wxpay_cert_key')}"  title="退款时需要上传" placeholder="格式：./cert/apiclient_key.pem" class="layui-input">
+                        </div>
+                    </div>
+
+                    <div class="hr-line-dashed"></div>
+
+                    <div class="layui-form-item text-center">
+                        <button class="layui-btn" type='submit'>保存数据</button>
+                        <button class="layui-btn layui-btn-danger" type='button' data-confirm="确定要取消编辑吗？" data-close>取消编辑</button>
+                    </div>
+                </form>
+        </div>
+        <div class="layui-tab-item">该功能暂未开放</div>
+        <div class="layui-tab-item">该功能暂未开放</div>
+    </div>
+</div>
+
+{/block}
+
+{block name="script"}
+<script>
+    window.form.render();
+    layui.use('element', function(){
+        var $ = layui.jquery
+        ,element = layui.element;
+    });
+    form.on('switch(switchtest)',function(data){
+        if(data.elem.checked){
+            $('.paystatus').val('1');
+        }else{
+            $('.paystatus').val('0');
+        }
+    })
+</script>
+{/block}
