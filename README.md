@@ -7,12 +7,13 @@ Tp-admin
 
 Documentation
 --
-PHP开发技术交流（QQ群 暂无）如有问题可以直接QQ2398156504
+本项目相关开发文档：http://doc.zkii.net/web/#/7?page_id=54  访问密码：654321
+如有问题可以直接QQ2398156504
 
 
 Repositorie
 --
- Tp-admin 为开源项目，允许把它用于任何地方，不受任何约束，欢迎 fork 项目。
+ Tp-admin 为开源项目，允许您把它用于任何地方，不受任何约束，欢迎 fork 项目。
 
 
 
@@ -25,7 +26,9 @@ Module
 * 微信公众号服务组件（基于[wechat-php-sdk](https://github.com/zoujingli/wechat-php-sdk)，微信网页授权获取用户信息、已关注粉丝管理、自定义菜单管理等等）
 * 微信商户支付服务组件（基于[wechat-php-sdk](https://github.com/zoujingli/wechat-php-sdk)，支持JSAPI支付、扫码模式一支付、扫码模式二支付）
 * 测试公众号名称：思过崖思过 （大家可以关注它来进行简单的测试）
-* 更多组件开发中...
+* 支持短信接口：聚合、阿里云（非阿里大鱼）、上海助通
+* 支持微信、支付宝支付
+* 支持模块与插件扩展（需自己开发）
 
 
 Environment
@@ -100,8 +103,6 @@ Copyright
 * 核心部分版权请遵循其对应的版权声明，波波添加修改部分则随意使用，波波本人也不在意版权问题。
 
 
-Sponsor
+Note
 --
-*这是ThinkAdmin项目的赞助方式，大家喜欢的可以对其赞助，波波本人也不需任何赞助。
-
-![赞助](http://zoujingli.oschina.io/static/pay.png)
+*虽然本项目开发周期只有短短几天，但是关于此项目后期不再提供任何更新。除非有人反馈存在重大BUG。所以本版本也算是最终版了。开发中有任何问题均可QQ留言。Bye！
