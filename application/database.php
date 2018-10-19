@@ -18,11 +18,11 @@ return [
     // 服务器地址
     'hostname'        => '127.0.0.1',
     // 数据库名
-    'database'        => 'jidiying_ky08_c',
+    'database'        => 'weixing',
     // 用户名
-    'username'        => 'jidiying_ky08_c',
+    'username'        => 'root',
     // 密码
-    'password'        => '5Nzac2c7nkHmHFQH',
+    'password'        => 'root',
     // 端口
     'hostport'        => '3306',
     // 连接dsn

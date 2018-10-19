@@ -15,6 +15,7 @@
 namespace service;
 
 use think\Request;
+use Endroid\QrCode\QrCode;
 
 /**
  * 系统工具服务
@@ -171,4 +172,79 @@ class ToolsService
         }
         return $result;
     }
+
+    /*
+     * Base64转图片存储
+     * @param $base64_image_content string 图片流
+     * @param $image_path string 文件存储路径
+     * @return Array
+     */
+    public static function saveBase64Image($base64_image_content,$image_path){
+        if (preg_match('/^(data:\s*image\/(\w+);base64,)/', $base64_image_content, $result)){
+            //图片后缀
+            $type = $result[2];
+            if($type=='jpeg'){
+                $type='jpg';
+            }
+            //保存位置--图片名
+            $image_name=date('His').str_pad(mt_rand(1, 99999), 5, '0', STR_PAD_LEFT).".".$type;
+            //$image_path = '/static/upload/quanzi/'.$memberid.'/image/';
+            $image_url = $image_path.$image_name;
+            if(!is_dir(ROOT_PATH.$image_path)){
+                mkdir(ROOT_PATH.$image_path,0755,true);
+            }
+            //解码
+            $decode=base64_decode(str_replace($result[1], '', $base64_image_content));
+            if (file_put_contents(ROOT_PATH.$image_url, $decode)){
+                $data['code']='0';
+                $data['imageName']=$image_name;
+                $data['image_url']=$image_url;
+                $data['type']=$type;
+                $data['msg']='保存成功！';
+            }else{
+                $data['code']='1';
+                $data['imgageName']='';
+                $data['image_url']='';
+                $data['type']='';
+                $data['msg']='图片保存失败！';
+            }
+        }else{
+            $data['code']='1';
+            $data['imgageName']='';
+            $data['image_url']='';
+            $data['type']='';
+            $data['msg']='base64图片格式有误！';
+        }
+        return $data;
+    }
+
+    /*
+     * 二维码生成
+     */
+    public static function create_qrcode($text,$logo,$width,$path,$filename='qrcode.png'){
+        $qrCode = new QrCode();
+        if(!empty($logo)){
+            $qrCode->setLogo($logo);
+            $qrCode->setLogoSize(48);
+        }
+        $width = $width < 150?150:$width;
+        $qrCode->setText($text)->setSize($width)
+            ->setPadding(10)
+            ->setErrorCorrection('high')
+            ->setForegroundColor(array('r' => 0, 'g' => 0, 'b' => 0, 'a' => 0))
+            ->setBackgroundColor(array('r' => 255, 'g' => 255, 'b' => 255, 'a' => 0))
+            ->setImageType(\Endroid\QrCode\QrCode::IMAGE_TYPE_PNG);
+        //$path = "/static/upload/qrcode/".$uid."/";
+        if(!is_dir(ROOT_PATH.$path)){
+            mkdir(ROOT_PATH.$path,0777,true);
+        }
+        $image_url = $path.$filename;
+        $result = $qrCode->save(ROOT_PATH.$image_url);
+        return $result;
+    }
+
+
+
+
+
 }

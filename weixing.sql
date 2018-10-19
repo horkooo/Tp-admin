@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50553
 File Encoding         : 65001
 
-Date: 2018-10-12 16:17:50
+Date: 2018-10-19 15:41:25
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -52,6 +52,29 @@ CREATE TABLE `system_auth_node` (
 -- ----------------------------
 
 -- ----------------------------
+-- Table structure for system_cash_record
+-- ----------------------------
+DROP TABLE IF EXISTS `system_cash_record`;
+CREATE TABLE `system_cash_record` (
+  `id` int(11) NOT NULL AUTO_INCREMENT COMMENT '记录ID',
+  `uid` int(11) DEFAULT NULL COMMENT '会员ID',
+  `store_id` int(11) DEFAULT NULL COMMENT '商家id',
+  `pre_balance` decimal(20,2) DEFAULT '0.00' COMMENT '变动前余额',
+  `amount` decimal(20,2) DEFAULT '0.00' COMMENT '变动金额',
+  `af_balance` decimal(20,2) DEFAULT '0.00' COMMENT '变动后余额',
+  `module_name` varchar(40) DEFAULT NULL COMMENT '模块名称',
+  `remark` varchar(255) DEFAULT NULL COMMENT '备注',
+  `createtime` int(10) DEFAULT NULL COMMENT '时间戳',
+  `trade_type` varchar(255) DEFAULT NULL COMMENT '交易类型',
+  UNIQUE KEY `id` (`id`),
+  KEY `uid` (`uid`,`store_id`,`createtime`,`trade_type`(191))
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+-- ----------------------------
+-- Records of system_cash_record
+-- ----------------------------
+
+-- ----------------------------
 -- Table structure for system_config
 -- ----------------------------
 DROP TABLE IF EXISTS `system_config`;
@@ -78,10 +101,10 @@ INSERT INTO `system_config` VALUES ('170', 'storage_qiniu_region', '华东');
 INSERT INTO `system_config` VALUES ('173', 'app_name', '微星');
 INSERT INTO `system_config` VALUES ('174', 'app_version', '2.00');
 INSERT INTO `system_config` VALUES ('176', 'browser_icon', '/static/upload/2317abc4376f7336/14a29d25c7f07c3f.png');
-INSERT INTO `system_config` VALUES ('184', 'wechat_appid', 'wx60a43dd8161666d4');
-INSERT INTO `system_config` VALUES ('185', 'wechat_appsecret', '062938ddcfe0d69786e4e3d9dcbb08aa');
-INSERT INTO `system_config` VALUES ('186', 'wechat_token', 'mytoken');
-INSERT INTO `system_config` VALUES ('187', 'wechat_encodingaeskey', 'KHyoWLoS7oLZYkB4PokMTfA5sm6Hrqc9Tzgn9iXc0YH');
+INSERT INTO `system_config` VALUES ('184', 'wechat_appid', 'wx2cf48186b0659fa4');
+INSERT INTO `system_config` VALUES ('185', 'wechat_appsecret', '34daffa227c7f5bbd248d2a7e35e41e7');
+INSERT INTO `system_config` VALUES ('186', 'wechat_token', 'XeeDm0DCmSG060hw5sHgOgWf6Z05sczh');
+INSERT INTO `system_config` VALUES ('187', 'wechat_encodingaeskey', 'OM8Ts4j84d28yvkSiMqq0xi0Y2wmkMitX4Y0QziQ0d0');
 INSERT INTO `system_config` VALUES ('188', 'wechat_mch_id', '1332187001');
 INSERT INTO `system_config` VALUES ('189', 'wechat_partnerkey', 'A82DC5BD1F3359081049C568D8502BC5');
 INSERT INTO `system_config` VALUES ('194', 'wechat_cert_key', '');
@@ -94,16 +117,41 @@ INSERT INTO `system_config` VALUES ('201', 'storage_oss_secret', 'hQTENHy6MYVUTg
 INSERT INTO `system_config` VALUES ('202', 'storage_oss_domain', 'think-oss.oss-cn-shanghai.aliyuncs.com');
 INSERT INTO `system_config` VALUES ('203', 'storage_oss_is_https', '1');
 INSERT INTO `system_config` VALUES ('204', 'storage_local_exts', 'png,jpg,gif,zip,rar,txt,jpeg,doc,ico');
-INSERT INTO `system_config` VALUES ('205', 'sms_type', 'aliyun');
+INSERT INTO `system_config` VALUES ('205', 'sms_type', '');
 INSERT INTO `system_config` VALUES ('206', 'sms_juhe_appkey', '');
-INSERT INTO `system_config` VALUES ('207', 'sms_aliyun_appid', 'LTAIT6wD1');
-INSERT INTO `system_config` VALUES ('208', 'sms_aliyun_appsecret', 'QBQPr4pn0jhR4');
+INSERT INTO `system_config` VALUES ('207', 'sms_aliyun_appid', '');
+INSERT INTO `system_config` VALUES ('208', 'sms_aliyun_appsecret', '');
 INSERT INTO `system_config` VALUES ('209', 'sms_zhutong_account', '');
 INSERT INTO `system_config` VALUES ('210', 'sms_zhutong_passwd', '');
-INSERT INTO `system_config` VALUES ('211', 'sms_aliyun_signname', '菠');
-INSERT INTO `system_config` VALUES ('212', 'sms_tpl_reg', 'SMS_147416386');
-INSERT INTO `system_config` VALUES ('213', 'sms_tpl_find', 'SMS_147436149');
+INSERT INTO `system_config` VALUES ('211', 'sms_aliyun_signname', '');
+INSERT INTO `system_config` VALUES ('212', 'sms_tpl_reg', '');
+INSERT INTO `system_config` VALUES ('213', 'sms_tpl_find', '');
 INSERT INTO `system_config` VALUES ('214', 'sms_tpl_notice', '');
+
+-- ----------------------------
+-- Table structure for system_credits_record
+-- ----------------------------
+DROP TABLE IF EXISTS `system_credits_record`;
+CREATE TABLE `system_credits_record` (
+  `id` int(11) NOT NULL AUTO_INCREMENT COMMENT '记录ID',
+  `uid` int(11) DEFAULT NULL COMMENT '会员ID',
+  `credittype` varchar(10) DEFAULT NULL,
+  `num` decimal(20,2) DEFAULT NULL,
+  `operator` int(10) DEFAULT NULL,
+  `module` varchar(40) DEFAULT NULL,
+  `clerk_id` int(10) DEFAULT NULL,
+  `store_id` int(10) DEFAULT NULL,
+  `clerk_type` tinyint(3) DEFAULT NULL,
+  `remark` varchar(255) DEFAULT NULL,
+  `openid` varchar(255) DEFAULT NULL,
+  `createtime` int(10) unsigned DEFAULT NULL,
+  UNIQUE KEY `id` (`id`),
+  KEY `uid` (`uid`,`credittype`,`openid`(191))
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+-- ----------------------------
+-- Records of system_credits_record
+-- ----------------------------
 
 -- ----------------------------
 -- Table structure for system_log
@@ -118,35 +166,76 @@ CREATE TABLE `system_log` (
   `content` text NOT NULL COMMENT '操作内容描述',
   `create_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=25 DEFAULT CHARSET=utf8 COMMENT='系统操作日志表';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='系统操作日志表';
 
 -- ----------------------------
 -- Records of system_log
 -- ----------------------------
-INSERT INTO `system_log` VALUES ('1', '61.52.47.159', 'admin/config/file', 'admin', '系统管理', '系统参数配置成功', '2018-08-22 15:31:55');
-INSERT INTO `system_log` VALUES ('2', '61.52.47.159', 'admin/config/index', 'admin', '系统管理', '系统参数配置成功', '2018-08-22 15:32:43');
-INSERT INTO `system_log` VALUES ('3', '61.52.41.215', 'admin/login/out', 'admin', '系统管理', '用户退出系统成功', '2018-08-22 16:52:43');
-INSERT INTO `system_log` VALUES ('4', '61.52.41.215', 'admin/login/index', 'admin', '系统管理', '用户登录系统成功', '2018-08-22 17:07:22');
-INSERT INTO `system_log` VALUES ('5', '61.52.34.221', 'admin/login/index', 'admin', '系统管理', '用户登录系统成功', '2018-08-31 16:45:51');
-INSERT INTO `system_log` VALUES ('6', '61.52.44.125', 'admin/login/index', 'admin', '系统管理', '用户登录系统成功', '2018-09-01 08:32:32');
-INSERT INTO `system_log` VALUES ('7', '61.52.41.74', 'admin/login/index', 'admin', '系统管理', '用户登录系统成功', '2018-09-03 09:02:49');
-INSERT INTO `system_log` VALUES ('8', '127.0.0.1', 'admin/config/index', 'admin', '系统管理', '系统参数配置成功', '2018-10-08 14:56:36');
-INSERT INTO `system_log` VALUES ('9', '127.0.0.1', 'admin/config/sms', 'admin', '系统管理', '系统参数配置成功', '2018-10-08 17:34:22');
-INSERT INTO `system_log` VALUES ('10', '127.0.0.1', 'admin/login/index', 'admin', '系统管理', '用户登录系统成功', '2018-10-09 08:29:42');
-INSERT INTO `system_log` VALUES ('11', '127.0.0.1', 'admin/config/sms', 'admin', '系统管理', '系统参数配置成功', '2018-10-09 08:30:10');
-INSERT INTO `system_log` VALUES ('12', '127.0.0.1', 'admin/login/index', 'admin', '系统管理', '用户登录系统成功', '2018-10-10 11:39:06');
-INSERT INTO `system_log` VALUES ('13', '127.0.0.1', 'admin/config/sms', 'admin', '系统管理', '系统参数配置成功', '2018-10-10 11:42:00');
-INSERT INTO `system_log` VALUES ('14', '127.0.0.1', 'admin/config/sms', 'admin', '系统管理', '系统参数配置成功', '2018-10-10 11:49:14');
-INSERT INTO `system_log` VALUES ('15', '127.0.0.1', 'admin/config/sms', 'admin', '系统管理', '系统参数配置成功', '2018-10-10 11:57:14');
-INSERT INTO `system_log` VALUES ('16', '127.0.0.1', 'admin/config/sms', 'admin', '系统管理', '系统参数配置成功', '2018-10-10 14:03:29');
-INSERT INTO `system_log` VALUES ('17', '127.0.0.1', 'admin/config/sms', 'admin', '系统管理', '系统参数配置成功', '2018-10-10 14:04:52');
-INSERT INTO `system_log` VALUES ('18', '127.0.0.1', 'admin/config/sms', 'admin', '系统管理', '系统参数配置成功', '2018-10-10 14:28:27');
-INSERT INTO `system_log` VALUES ('19', '127.0.0.1', 'admin/config/sms_tpl', 'admin', '系统管理', '系统参数配置成功', '2018-10-10 14:29:27');
-INSERT INTO `system_log` VALUES ('20', '127.0.0.1', 'admin/config/sms', 'admin', '系统管理', '系统参数配置成功', '2018-10-10 14:49:49');
-INSERT INTO `system_log` VALUES ('21', '127.0.0.1', 'admin/config/sms_tpl', 'admin', '系统管理', '系统参数配置成功', '2018-10-10 14:51:50');
-INSERT INTO `system_log` VALUES ('22', '127.0.0.1', 'admin/config/sms', 'admin', '系统管理', '系统参数配置成功', '2018-10-10 14:56:39');
-INSERT INTO `system_log` VALUES ('23', '127.0.0.1', 'admin/login/index', 'admin', '系统管理', '用户登录系统成功', '2018-10-11 09:00:41');
-INSERT INTO `system_log` VALUES ('24', '127.0.0.1', 'admin/login/index', 'admin', '系统管理', '用户登录系统成功', '2018-10-12 14:36:42');
+
+-- ----------------------------
+-- Table structure for system_member
+-- ----------------------------
+DROP TABLE IF EXISTS `system_member`;
+CREATE TABLE `system_member` (
+  `uid` int(11) NOT NULL AUTO_INCREMENT COMMENT '会员ID',
+  `mobile` char(11) DEFAULT NULL COMMENT '手机号',
+  `email` varchar(50) DEFAULT NULL COMMENT '邮箱',
+  `password` varchar(32) DEFAULT NULL COMMENT '密码',
+  `salt` varchar(10) DEFAULT NULL COMMENT '随机数',
+  `groupid` int(11) DEFAULT NULL COMMENT '会员组',
+  `credit1` decimal(20,2) DEFAULT '0.00',
+  `credit2` decimal(20,2) DEFAULT '0.00',
+  `credit3` decimal(20,2) DEFAULT '0.00',
+  `credit4` decimal(20,2) DEFAULT '0.00',
+  `credit5` decimal(20,2) DEFAULT '0.00',
+  `credit6` decimal(20,2) DEFAULT '0.00',
+  `createtime` int(10) DEFAULT NULL,
+  `realname` varchar(20) DEFAULT NULL,
+  `nickname` varchar(20) DEFAULT NULL,
+  `avatar` varchar(255) DEFAULT NULL,
+  `qq` varchar(20) DEFAULT NULL,
+  `vip` tinyint(3) DEFAULT NULL,
+  `gender` tinyint(1) DEFAULT NULL,
+  `birthyear` smallint(6) DEFAULT NULL,
+  `birthmonth` tinyint(3) DEFAULT NULL,
+  `birthday` tinyint(3) DEFAULT NULL,
+  `constellation` varchar(10) DEFAULT NULL,
+  `zodiac` varchar(5) DEFAULT NULL,
+  `telephone` varchar(15) DEFAULT NULL,
+  `idcard` varchar(30) DEFAULT NULL,
+  `studentid` varchar(50) DEFAULT NULL,
+  `grade` varchar(10) DEFAULT NULL,
+  `address` varchar(255) DEFAULT NULL,
+  `zipcode` varchar(10) DEFAULT NULL,
+  `nationality` varchar(30) DEFAULT NULL,
+  `resideprovince` varchar(30) DEFAULT NULL,
+  `residecity` varchar(30) DEFAULT NULL,
+  `residedist` varchar(30) DEFAULT NULL,
+  `graduateschool` varchar(50) DEFAULT NULL,
+  `company` varchar(50) DEFAULT NULL,
+  `education` varchar(10) DEFAULT NULL,
+  `occupation` varchar(30) DEFAULT NULL,
+  `position` varchar(30) DEFAULT NULL,
+  `revenue` varchar(10) DEFAULT NULL,
+  `affectivestatus` varchar(30) DEFAULT NULL,
+  `lookingfor` varchar(255) DEFAULT NULL,
+  `bloodtype` varchar(5) DEFAULT NULL,
+  `height` varchar(5) DEFAULT NULL,
+  `weight` varchar(5) DEFAULT NULL,
+  `alipay` varchar(30) DEFAULT NULL,
+  `msn` varchar(30) DEFAULT NULL,
+  `taobao` varchar(30) DEFAULT NULL,
+  `site` varchar(30) DEFAULT NULL,
+  `bio` text,
+  `interest` text,
+  `pay_password` varchar(30) DEFAULT NULL,
+  UNIQUE KEY `uid` (`uid`),
+  KEY `mobile` (`mobile`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+-- ----------------------------
+-- Records of system_member
+-- ----------------------------
 
 -- ----------------------------
 -- Table structure for system_menu
@@ -167,18 +256,18 @@ CREATE TABLE `system_menu` (
   `create_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
   PRIMARY KEY (`id`),
   KEY `index_system_menu_node` (`node`) USING BTREE
-) ENGINE=InnoDB AUTO_INCREMENT=108 DEFAULT CHARSET=utf8 COMMENT='系统菜单表';
+) ENGINE=InnoDB AUTO_INCREMENT=111 DEFAULT CHARSET=utf8 COMMENT='系统菜单表';
 
 -- ----------------------------
 -- Records of system_menu
 -- ----------------------------
 INSERT INTO `system_menu` VALUES ('2', '0', '系统管理', '', '', '#', '', '_self', '1000', '1', '0', '2015-11-16 19:15:38');
-INSERT INTO `system_menu` VALUES ('4', '2', '系统配置', '', '', '#', '', '_self', '100', '1', '0', '2016-03-14 18:12:55');
+INSERT INTO `system_menu` VALUES ('4', '2', '系统配置', '', '', '#', '', '_self', '0', '1', '0', '2016-03-14 18:12:55');
 INSERT INTO `system_menu` VALUES ('5', '4', '网站参数', '', 'fa fa-apple', 'admin/config/index', '', '_self', '20', '1', '0', '2016-05-06 14:36:49');
 INSERT INTO `system_menu` VALUES ('6', '4', '文件存储', '', 'fa fa-save', 'admin/config/file', '', '_self', '30', '1', '0', '2016-05-06 14:39:43');
 INSERT INTO `system_menu` VALUES ('9', '20', '操作日志', '', 'glyphicon glyphicon-console', 'admin/log/index', '', '_self', '50', '1', '0', '2017-03-24 15:49:31');
 INSERT INTO `system_menu` VALUES ('19', '20', '权限管理', '', 'fa fa-user-secret', 'admin/auth/index', '', '_self', '10', '1', '0', '2015-11-17 13:18:12');
-INSERT INTO `system_menu` VALUES ('20', '2', '系统权限', '', '', '#', '', '_self', '200', '1', '0', '2016-03-14 18:11:41');
+INSERT INTO `system_menu` VALUES ('20', '2', '系统权限', '', '', '#', '', '_self', '1', '1', '0', '2016-03-14 18:11:41');
 INSERT INTO `system_menu` VALUES ('21', '20', '系统菜单', '', 'glyphicon glyphicon-menu-hamburger', 'admin/menu/index', '', '_self', '30', '1', '0', '2015-11-16 19:16:16');
 INSERT INTO `system_menu` VALUES ('22', '20', '节点管理', '', 'fa fa-ellipsis-v', 'admin/node/index', '', '_self', '20', '1', '0', '2015-11-16 19:16:16');
 INSERT INTO `system_menu` VALUES ('29', '20', '系统用户', '', 'fa fa-users', 'admin/user/index', '', '_self', '40', '1', '0', '2016-10-31 14:31:40');
@@ -207,6 +296,32 @@ INSERT INTO `system_menu` VALUES ('94', '4', '系统概况', '', 'fa fa-lemon-o'
 INSERT INTO `system_menu` VALUES ('105', '4', '短信服务', '', 'fa fa-commenting-o', '/admin/config/sms', '', '_self', '0', '1', '0', '2018-10-08 16:51:37');
 INSERT INTO `system_menu` VALUES ('106', '4', '短信模板', '', 'fa fa-book', '/admin/config/sms_tpl', '', '_self', '0', '1', '0', '2018-10-10 14:26:29');
 INSERT INTO `system_menu` VALUES ('107', '4', '支付管理', '', 'fa fa-cc-paypal', '/admin/config/payment', '', '_self', '0', '1', '0', '2018-10-11 09:35:06');
+INSERT INTO `system_menu` VALUES ('108', '2', '扩展中心', '', '', '#', '', '_self', '3', '1', '0', '2018-10-16 09:37:23');
+INSERT INTO `system_menu` VALUES ('109', '108', '模块列表', '', 'fa fa-cubes', '/admin/extend/modules', '', '_self', '0', '1', '0', '2018-10-16 09:38:36');
+INSERT INTO `system_menu` VALUES ('110', '108', '插件管理', '', 'fa fa-unlink', '/admin/extend/plugs', '', '_self', '0', '1', '0', '2018-10-16 09:41:09');
+
+-- ----------------------------
+-- Table structure for system_modules
+-- ----------------------------
+DROP TABLE IF EXISTS `system_modules`;
+CREATE TABLE `system_modules` (
+  `id` int(11) NOT NULL AUTO_INCREMENT COMMENT '模块ID',
+  `name` varchar(40) DEFAULT NULL COMMENT '模块名字',
+  `tag` varchar(20) DEFAULT NULL COMMENT '模块标识',
+  `version` tinytext COMMENT '版本',
+  `author` varchar(40) DEFAULT NULL COMMENT '作者',
+  `desc` varchar(255) DEFAULT NULL COMMENT '描述',
+  `status` tinyint(1) DEFAULT '0' COMMENT '0关闭1开启',
+  `addtime` datetime DEFAULT NULL COMMENT '创建时间',
+  UNIQUE KEY `id` (`id`),
+  UNIQUE KEY `tag` (`tag`),
+  KEY `name` (`name`),
+  KEY `status` (`status`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+-- ----------------------------
+-- Records of system_modules
+-- ----------------------------
 
 -- ----------------------------
 -- Table structure for system_node
@@ -377,7 +492,7 @@ CREATE TABLE `system_user` (
 -- ----------------------------
 -- Records of system_user
 -- ----------------------------
-INSERT INTO `system_user` VALUES ('10000', 'admin', '21232f297a57a5a743894a0e4a801fc3', '22222222', 'sdfsd@Qq.com1', '13888888855', 'dfgsdfgsfd', '27047', '2018-10-12 14:36:42', '1', '301,302,303,304', '0', null, '2015-11-13 15:14:22');
+INSERT INTO `system_user` VALUES ('10000', 'admin', '21232f297a57a5a743894a0e4a801fc3', '22222222', 'sdfsd@Qq.com1', '13888888855', 'dfgsdfgsfd', '27066', '2018-10-19 08:40:15', '1', '301,302,303,304', '0', null, '2015-11-13 15:14:22');
 
 -- ----------------------------
 -- Table structure for wechat_fans

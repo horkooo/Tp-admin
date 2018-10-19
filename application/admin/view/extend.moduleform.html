@@ -1,0 +1,40 @@
+<form class="layui-form layui-box" style='padding:25px 30px 20px 0' action="__SELF__" data-auto="true" method="post">
+
+    <div class="layui-form-item">
+        <label class="layui-form-label">模块名称：</label>
+        <div class="layui-input-block">
+            <input type="name" name="name" value='{$vo.name|default=""}' required="required" title="请输入模块名称" placeholder="请输入模块名称" class="layui-input">
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">模块标签：</label>
+        <div class="layui-input-block">
+            <input type="tag" name="tag" value='{$vo.tag|default=""}' required="required" title="请输入模块标识" placeholder="请输入模块标识" class="layui-input">
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">版本号：</label>
+        <div class="layui-input-block">
+            <input type="version" name="version" value='{$vo.version|default=""}' required="required" title="请输入模块版本号" placeholder="请输入模块版本号" class="layui-input">
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">模块简介</label>
+        <div class="layui-input-block">
+            <textarea placeholder="请输入模块简介（20字以内）" required="required" title="请输入模块简介" class="layui-textarea" name="desc">{$vo.desc|default=""}</textarea>
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">开发者：</label>
+        <div class="layui-input-block">
+            <input type="author" name="author" value='{$vo.author|default=""}' required="required" title="请输入开发者名称或单位名称" placeholder="请输入开发者名称" class="layui-input">
+        </div>
+    </div>
+    <div class="hr-line-dashed"></div>
+    <div class="layui-form-item text-center">
+        {if isset($vo['id'])}<input type='hidden' value='{$vo.id}' name='id'/>{/if}
+        <button class="layui-btn" type='submit'>保存数据</button>
+        <button class="layui-btn layui-btn-danger" type='button' data-confirm="确定要取消编辑吗？" data-close>取消编辑</button>
+    </div>
+
+</form>

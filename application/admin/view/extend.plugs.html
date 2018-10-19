@@ -1,0 +1,66 @@
+{extend name='extra@admin/content'}
+
+{block name="button"}
+<div class="nowrap pull-right" style="margin-top:10px">
+    <button data-modal='{:url("$classuri/plugs_add")}' data-title="添加插件" class='layui-btn layui-btn-small'>
+    <i class='fa fa-plus'></i> 添加插件
+</button>
+</div>
+{/block}
+
+{block name="content"}
+<form onsubmit="return false;" data-auto="true" method="post">
+    {if empty($list)}
+    <p class="help-block text-center well">没 有 记 录 哦！</p>
+    {else}
+    <input type="hidden" value="resort" name="action"/>
+    <table class="layui-table" lay-skin="line" lay-size="sm">
+        <thead>
+        <tr>
+            <th class='text-center'>插件名称</th>
+            <th class='text-center'>插件标识</th>
+            <th class='text-center'>功能描述</th>
+            <th class='text-center'>开发者</th>
+            <th class='text-center'>调用代码</th>
+            <th class='text-center'>状态</th>
+            <th class='text-center'>操作</th>
+        </tr>
+        </thead>
+        <tbody>
+        {foreach $list as $key=>$vo}
+        <tr>
+            <td class='text-center'>{$vo.name}</td>
+            <td class='text-center'>{$vo.tag}</td>
+            <td class='text-center'>{$vo.desc}</td>
+            <td class='text-center'>{$vo.author}</td>
+            <td class='text-center'>{$vo.code}</td>
+            <td class='text-center'>
+                {if $vo.is_install eq 0}
+                <span>未安装</span>
+                {elseif $vo.is_install eq 1}
+                <span style="color:#090">已安装</span>
+                {/if}
+            </td>
+            <td class='text-center nowrap'>
+                {if $vo.is_install eq 1 and auth("$classuri/plug_uninstall")}
+                <span class="text-explode">|</span>
+                <a data-update="{$vo.tag}" data-field='is_install' data-value='0' data-action='{:url("$classuri/plug_uninstall")}'
+                   href="javascript:void(0)">卸载</a>
+                {elseif auth("$classuri/plug_install")}
+                <span class="text-explode">|</span>
+                <a data-update="{$vo.tag}" data-field='is_install' data-value='1' data-action='{:url("$classuri/plug_install")}'
+                   href="javascript:void(0)">安装</a>
+                {/if}
+            </td>
+        </tr>
+        {/foreach}
+        </tbody>
+    </table>
+    {if isset($page)}<p>{$page}</p>{/if}
+    {/if}
+</form>
+
+
+
+
+{/block}

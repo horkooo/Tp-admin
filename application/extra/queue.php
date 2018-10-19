@@ -12,5 +12,6 @@
 // | github开源项目：https://github.com/zoujingli/ThinkAdmin
 // +----------------------------------------------------------------------
 
-
-return ['shop/admin/index'=>'shop/admin.index/index'];
+return [
+    'connector' => 'Sync'
+];

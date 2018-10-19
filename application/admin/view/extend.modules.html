@@ -1,0 +1,85 @@
+{extend name='extra@admin/content'}
+
+{block name="button"}
+<div class="nowrap pull-right" style="margin-top:10px">
+    <button data-modal='{:url("$classuri/module_add")}' data-title="添加模块" class='layui-btn layui-btn-small'>
+        <i class='fa fa-plus'></i> 添加模块
+    </button>
+    <button data-update data-field='delete' data-action='{:url("$classuri/module_del")}'
+            class='layui-btn layui-btn-small layui-btn-danger'>
+        <i class='fa fa-remove'></i> 删除模块
+    </button>
+</div>
+{/block}
+
+{block name="content"}
+<form onsubmit="return false;" data-auto="true" method="post">
+    {if empty($list)}
+    <p class="help-block text-center well">没 有 记 录 哦！</p>
+    {else}
+    <input type="hidden" value="resort" name="action"/>
+    <table class="layui-table" lay-skin="line" lay-size="sm">
+        <thead>
+        <tr>
+            <th class='list-table-check-td'>
+                <input data-none-auto="" data-check-target='.list-check-box' type='checkbox'/>
+            </th>
+            <th class='text-center'>模块名称</th>
+            <th class='text-center'>模块标识</th>
+            <th class='text-center'>版本号</th>
+            <th class='text-center'>描述</th>
+            <th class='text-center'>开发者</th>
+            <th class='text-center'>状态</th>
+            <th class='text-center'>创建时间</th>
+            <th class='text-center'>操作</th>
+        </tr>
+        </thead>
+        <tbody>
+        {foreach $list as $key=>$vo}
+        <tr>
+            <td class='list-table-check-td'>
+                <input class="list-check-box" value='{$vo.id}' type='checkbox'/>
+            </td>
+            <td class='text-center'>{$vo.name}</td>
+            <td class='text-center'>{$vo.tag}</td>
+            <td class='text-center'>{$vo.version}</td>
+            <td class='text-center'>{$vo.desc}</td>
+            <td class='text-center'>{$vo.author}</td>
+            <td class='text-center'>
+                {if $vo.status eq 0}
+                <span>禁用</span>
+                {elseif $vo.status eq 1}
+                <span style="color:#090">启用</span>
+                {/if}
+            </td>
+            <td class="text-center nowrap">{$vo.addtime|format_datetime}</td>
+            <td class='text-center nowrap'>
+                {if $vo.status eq 1 and auth("$classuri/dis_module")}
+                <span class="text-explode">|</span>
+                <a data-update="{$vo.id}" data-field='status' data-value='0' data-action='{:url("$classuri/dis_module")}'
+                   href="javascript:void(0)">禁用</a>
+                {elseif auth("$classuri/dis_module")}
+                <span class="text-explode">|</span>
+                <a data-update="{$vo.id}" data-field='status' data-value='1' data-action='{:url("$classuri/dis_module")}'
+                   href="javascript:void(0)">启用</a>
+                {/if}
+                {if auth("$classuri/update_menu")}
+                <span class="text-explode">|</span>
+                <a data-update="{$vo.id}" data-action='{:url("$classuri/update_menu")}' href="javascript:void(0)">更新菜单</a>
+                {/if}
+                <span class="text-explode">|</span>
+                <a data-href= '/{$vo.tag}/wapindex'
+                   href="javascript:void(0)">访问</a>
+            </td>
+        </tr>
+        {/foreach}
+        </tbody>
+    </table>
+    {if isset($page)}<p>{$page}</p>{/if}
+    {/if}
+</form>
+
+
+
+
+{/block}
