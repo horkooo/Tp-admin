@@ -182,6 +182,7 @@ class Api extends Controller
             case 'subscribe': // 粉丝关注事件
                 $this->_updateFansInfo(true);
                 $this->_spread($event['key']);
+                $this->_saveFansInfo(true);
                 return $this->_keys('wechat_keys#keys#subscribe', true);
             case 'unsubscribe':// 粉丝取消关注
                 $this->_updateFansInfo(false);
@@ -259,5 +260,30 @@ class Api extends Controller
             DataService::save('wechat_fans', $data, 'openid');
         }
     }
+
+    /*
+     * 关注获取用户信息
+     */
+    protected function _saveFansInfo($subscribe = true){
+        if($subscribe){
+            $userInfo = WechatService::getFansInfo($this->openid);
+            if(empty($userInfo) || $userInfo['subscribe']){
+                $wechat = &load_wechat('User');
+                $userInfo = $wechat->getUserInfo($this->openid);
+                //关注时将粉丝数据同步至后台
+                $userInfo['subscribe'] = intval($subscribe);
+                WechatService::setFansInfo($userInfo, $wechat->appid);
+            }
+
+            $data = ['openid'=>$this->openid,'nickname'=>$userInfo['nickname'],'nationality'=>$userInfo['country'],
+                'resideprovince'=>$userInfo['province'],'residecity'=>$userInfo['city'],'avatar'=>$userInfo['headimgurl'],
+                'gender'=>$userInfo['sex'],'createtime'=>$userInfo['subscribe_time']];
+            DataService::save('system_member',$data,'openid');
+        }
+    }
+    
+
+
+
 
 }
