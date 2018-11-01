@@ -5,6 +5,16 @@
 {/block}
 
 {block name="body"}
+<style>
+  .admin-captcha {
+    position: absolute;
+    margin-left: 205px;
+    width: 48%;
+    right: 0;
+    top: -2px;
+    height: 40px;
+}
+</style>
 <div class="login-container full-height">
 
     <!-- 动态云层动画 开始 -->
@@ -53,6 +63,10 @@
                            type="password" autocomplete="off" class="login-input password"
                            title="请输入4位及以上的字符" placeholder="请输入密码"/>
                 </li>
+                <li>
+                    <input style="width: 50%;display: inline-block;" type="text" name="verify" placeholder="请输入验证码" autocomplete="off" class="login-input password">
+                    <img style="" id="verify_img" class="admin-captcha" src="{:captcha_src()}" onclick="updateVerify()">
+                </li>
                 <li class="text-center">
                     <button type="submit" class="layui-btn layui-disabled" data-form-loaded="立 即 登 入">正 在 载 入</button>
                     <!--<a style="position:absolute;display:block;right:0" href="javascript:void(0)">忘记密码？</a>-->
@@ -85,5 +99,10 @@
             $('#right-hander').addClass('initial_right_hand').removeClass('right_hand')
         });
     });
+    function updateVerify() {
+        var ts = Date.parse(new Date())/1000;
+        var img = document.getElementById('verify_img');
+        img.src = "/captcha?id="+ts;
+    }
 </script>
 {/block}
