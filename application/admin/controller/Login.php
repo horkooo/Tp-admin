@@ -51,6 +51,9 @@ class Login extends BasicAdmin
         // 输入数据效验
         $username = $this->request->post('username', '', 'trim');
         $password = $this->request->post('password', '', 'trim');
+        $captcha = $this->request->post('verify','','trim');
+        empty($captcha) && $this->error('验证码不能为空');
+        (!captcha_check($captcha)) && $this->error('验证码不正确');
         strlen($username) < 4 && $this->error('登录账号长度不能少于4位有效字符!');
         strlen($password) < 4 && $this->error('登录密码长度不能少于4位有效字符!');
         // 用户信息验证
