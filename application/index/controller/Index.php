@@ -36,11 +36,6 @@ class Index extends Controller
 		exit;
     }
 
-    public function test(){
-        $aa = SmsService::send('15225098797','reg','111222');
-        echo "<pre>";
-        print_r($aa);
-        exit;
-    }
+    
 
 }
