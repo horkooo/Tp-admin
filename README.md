@@ -30,6 +30,9 @@ Module
 * 支持微信、支付宝支付
 * 支持模块与插件扩展（需自己开发）
 
+ThinkPHP
+--
+2018年12月12日，新增TP核心自动定位模板的功能。在引入页面公共头部和底部时，比如index模块下，可以在HTML中写{include file="public/header.html" /}标签，然后把header.html放在index模块下视图文件夹如“view”的下级目录public中。不影响TP文档中的正常流程，目的是为开发者提供更大的方便。
 
 Environment
 ---
