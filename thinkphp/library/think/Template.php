@@ -1077,7 +1077,8 @@ class Template
             }
             $template = realpath($path . $template . '.' . ltrim($this->config['view_suffix'], '.'));
         }
-
+        $bbpath = APP_PATH.Request::instance()->module().DS.basename($this->config['view_path']).DS.$template;
+        $template = file_exists($template)?$template:$bbpath;
         if (is_file($template)) {
             // 记录模板文件的更新时间
             $this->includeFile[$template] = filemtime($template);
