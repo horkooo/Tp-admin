@@ -549,8 +549,11 @@ class App
         // 是否自动转换控制器和操作名
         $convert = is_bool($convert) ? $convert : $config['url_convert'];
 
-        // 获取控制器名
+        // 获取控制器名--修复远程代码执行漏洞
         $controller = strip_tags($result[1] ?: $config['default_controller']);
+        if (!preg_match('/^[A-Za-z](\w|\.)*$/', $controller)) {
+            throw new HttpException(404, 'controller not exists:' . $controller);
+        }
         $controller = $convert ? strtolower($controller) : $controller;
 
         // 获取操作名
