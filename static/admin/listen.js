@@ -73,7 +73,8 @@ define(['jquery', 'admin.plugs'], function () {
         }
         var action = $(this).attr('data-action') || $(this).parents('[data-location]').attr('data-location');
         var value = $(this).attr('data-value') || 0, field = $(this).attr('data-field') || 'status';
-        $.msg.confirm('确定要操作这些数据吗？', function () {
+		var tip_content = ($(this).attr('data-confirm') == "")?"确定要操作这些数据吗？":$(this).attr('data-confirm');
+        $.msg.confirm(tip_content, function () {
             $.form.load(action, {field: field, value: value, id: id}, 'POST');
         });
     });
