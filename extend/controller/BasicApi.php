@@ -70,7 +70,8 @@ class BasicApi extends Controller
     public function response($msg, $code = 'SUCCESS', $data = [], $type = 'json')
     {
         $result = ['msg' => $msg, 'code' => $code, 'data' => $data, 'type' => strtolower($type)];
-        return Response::create($result, $type)->header(ToolsService::corsRequestHander())->code(200);
+        $response = Response::create($result, $type)->header(ToolsService::corsRequestHander())->code(200);
+        return $response->send();
     }
 
 }
