@@ -7,7 +7,7 @@ Tp-admin
 
 Documentation
 --
-本项目相关开发文档：http://doc.zkii.net/web/#/7?page_id=54  访问密码：654321
+本项目相关开发文档：http://doc.zkii.net/web/#/4?page_id=21
 如有问题可以直接QQ2398156504
 
 
