@@ -15,9 +15,10 @@ class AdbService{
      */
     public function __construct(){
         exec("adb shell wm size",$screen);
-        $screen = explode(":",$screen);
+        $screen = explode(":",$screen[0]);
         $info = explode("x",$screen[1]);    //1080x2280
-        $this->screenPix = [$info[0],$info[1]];   //X|Y
+        $this->screenPix = [intval($info[0]),intval($info[1])];   //X|Y
+        print_r($this->screenPix);
         $this->savePath = __DIR__ . "/images/SH".date("YmdHis").".png";
     }
 
@@ -25,7 +26,7 @@ class AdbService{
     /*
      * 单击屏幕指定位置
      */
-    public function singleTap($x,$y){
+    public function singleTap($x=0,$y=0){
         $x = empty($x)?$this->screenPix[0]/2:$x;
         $y = empty($y)?$this->screenPix[1]/2:$y;
         exec("adb shell input tap ".$x." ".$y." ");
@@ -36,11 +37,10 @@ class AdbService{
     /*
      * 双击屏幕指定位置
      */
-    public function doubleTap($x,$y){
+    public function doubleTap($x=0,$y=0){
         $x = empty($x)?$this->screenPix[0]/2:$x;
         $y = empty($y)?$this->screenPix[1]/2:$y;
         exec("adb shell input tap ".$x." ".$y." ");
-        sleep(1); //间隔1秒
         exec("adb shell input tap ".$x." ".$y." ");
         return true;
     }
@@ -95,6 +95,10 @@ class AdbService{
      */
     public function screenShot($filepath){
         $filepath = empty($filepath)?$this->savePath:$filepath;
+        $dirname = dirname($filepath);
+        if(!is_dir($dirname)){
+            mkdir($dirname,0777,true);
+        }
         exec("adb exec-out screencap -p > ".$filepath);
         //exec("adb exec-out screencap -p | sed 's/\r\n$//'.$filepath")  //备用方法，部分不兼容机器可尝试使用
         return $filepath;
