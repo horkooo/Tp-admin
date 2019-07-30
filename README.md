@@ -25,9 +25,9 @@ Module
 * `Http`服务组件（原生`CURL`封装，兼容PHP多版本）
 * 微信公众号服务组件（基于[wechat-php-sdk](https://github.com/zoujingli/wechat-php-sdk)，微信网页授权获取用户信息、已关注粉丝管理、自定义菜单管理等等）
 * 微信商户支付服务组件（基于[wechat-php-sdk](https://github.com/zoujingli/wechat-php-sdk)，支持JSAPI支付、扫码模式一支付、扫码模式二支付）
-* 测试公众号名称：思过崖思过 （大家可以关注它来进行简单的测试）
-* 支持短信接口：聚合、阿里云（非阿里大鱼）、上海助通
-* 支持微信、支付宝支付
+* 支付服务，支持微信、支付宝所有支付接口，参见PaymentService.php
+* 支持短信接口：聚合、阿里云（非阿里大鱼）、上海助通。参见SmsService.php
+* 支持连接手机，操作手机自动完成各项任务。参见AdbService.php 需将手机开启开发者模式，连接电脑，至于云端控制大家可以自行研究。控制器运行在cli模式下，开启exec()函数
 * 支持模块与插件扩展（需自己开发）
 
 ThinkPHP
@@ -54,47 +54,9 @@ Environment
 * Nginx
 
 ```
-server {
-	listen 80;
-	server_name wealth.demo.cuci.cc;
-	root /home/wwwroot/ThinkAdmin;
-	index index.php index.html index.htm;
-	
-	add_header X-Powered-Host $hostname;
-	fastcgi_hide_header X-Powered-By;
-	
-	if (!-e $request_filename) {
-		rewrite  ^/(.+?\.php)/?(.*)$  /$1/$2  last;
-		rewrite  ^/(.*)$  /index.php/$1  last;
-	}
-	
-	location ~ \.php($|/){
-		fastcgi_index   index.php;
-		fastcgi_pass    127.0.0.1:9000;
-		include         fastcgi_params;
-		set $real_script_name $fastcgi_script_name;
-		if ($real_script_name ~ "^(.+?\.php)(/.+)$") {
-			set $real_script_name $1;
-		}
-		fastcgi_split_path_info ^(.+?\.php)(/.*)$;
-		fastcgi_param   PATH_INFO               $fastcgi_path_info;
-		fastcgi_param   SCRIPT_NAME             $real_script_name;
-		fastcgi_param   SCRIPT_FILENAME         $document_root$real_script_name;
-		fastcgi_param   PHP_VALUE               open_basedir=$document_root:/tmp/:/proc/;
-		access_log      /home/wwwlog/domain_access.log    access;
-		error_log       /home/wwwlog/domain_error.log     error;
-	}
-	
-	location ~ .*\.(gif|jpg|jpeg|png|bmp|swf)$ {
-		access_log  off;
-		error_log   off;
-		expires     30d;
-	}
-	
-	location ~ .*\.(js|css)?$ {
-		access_log   off;
-		error_log    off;
-		expires      12h;
+location / {
+	if (!-e $request_filename){
+		rewrite  ^(.*)$  /index.php?s=$1  last;   break;
 	}
 }
 ```
@@ -108,4 +70,4 @@ Copyright
 
 Note
 --
-*虽然本项目开发周期只有短短几天，但是关于此项目后期不再提供任何更新。除非有人反馈存在重大BUG。所以本版本也算是最终版了。开发中有任何问题均可QQ留言。Bye！
+*本项目开发周期不长，基本上属于在别人的基础上二次修改而来。若大家在使用过程中遇到问题，可以随时联系我进行修改。
