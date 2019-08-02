@@ -1,16 +1,5 @@
 <?php
 
-// +----------------------------------------------------------------------
-// | ThinkAdmin
-// +----------------------------------------------------------------------
-// | 版权所有 2014~2017 广州楚才信息科技有限公司 [ http://www.cuci.cc ]
-// +----------------------------------------------------------------------
-// | 官方网站: http://think.ctolog.com
-// +----------------------------------------------------------------------
-// | 开源协议 ( https://mit-license.org )
-// +----------------------------------------------------------------------
-// | github开源项目：https://github.com/zoujingli/ThinkAdmin
-// +----------------------------------------------------------------------
 
 namespace app\admin\controller;
 
@@ -18,6 +7,7 @@ use controller\BasicAdmin;
 use service\LogService;
 use service\NodeService;
 use think\Db;
+use think\Session;
 
 /**
  * 系统登录控制器
@@ -52,12 +42,17 @@ class Login extends BasicAdmin
         $username = $this->request->post('username', '', 'trim');
         $password = $this->request->post('password', '', 'trim');
         $captcha = $this->request->post('verify','','trim');
+        $login_error = (int)Session::get('login_error');
+        $login_error >= 3 && $this->error('登陆次数超限');
         empty($captcha) && $this->error('验证码不能为空');
         (!captcha_check($captcha)) && $this->error('验证码不正确');
         strlen($username) < 4 && $this->error('登录账号长度不能少于4位有效字符!');
         strlen($password) < 4 && $this->error('登录密码长度不能少于4位有效字符!');
         // 用户信息验证
         $user = Db::name('SystemUser')->where('username', $username)->find();
+        if(empty($user) || $user['password'] !== md5($password)){
+            Session::set('login_error',$login_error+1);
+        }
         empty($user) && $this->error('登录账号不存在，请重新输入!');
         ($user['password'] !== md5($password)) && $this->error('登录密码与账号不匹配，请重新输入!');
         empty($user['status']) && $this->error('账号已经被禁用，请联系管理!');
