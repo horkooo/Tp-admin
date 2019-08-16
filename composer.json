@@ -28,7 +28,8 @@
         "aliyuncs/oss-sdk-php": "^2.2",
         "flc/alidayu": "^2.0",
         "yansongda/pay": "^2.5",
-        "5ini99/think-addons": "^2.1"
+        "5ini99/think-addons": "^2.1",
+        "phpoffice/phpspreadsheet": "^1.8"
     },
     "extra": {
         "think-path": "thinkphp"
