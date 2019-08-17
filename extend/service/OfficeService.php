@@ -97,6 +97,7 @@ class OfficeService extends Model{
         $col_num = count($data[0]);
         if(!empty($title)){
             $spreadSheet->getProperties()->setTitle($title);
+            $spreadSheet->getActiveSheet()->setCellValue('A1',$title);
             $spreadSheet->getActiveSheet()->getStyle('A1')->getAlignment()->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER);
             $spreadSheet->getActiveSheet()->mergeCells('A1:'.self::$cellKey[$col_num-1].'1');
             $begin +=1;
@@ -104,8 +105,10 @@ class OfficeService extends Model{
         if(!empty($keys)){
             for($i=0;$i<$col_num;$i++){
                 $spreadSheet->getActiveSheet()->getStyle(self::$cellKey[$i].'2')->getAlignment()->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER);
+                $spreadSheet->setActiveSheetIndex(0)->setCellValue(self::$cellKey[$i].'2',$keys[$i]);
             }
-            array_unshift($data,$keys);
+            $begin +=1;
+            //array_unshift($data,$keys);
         }
         $leng = sizeof($data);
         for($row = 0;$row < $leng;$row++){
@@ -114,6 +117,7 @@ class OfficeService extends Model{
                 $spreadSheet->getActiveSheet()->setCellValueByColumnAndRow($t+1,$j,$data[$row][$keys[$t]]);
             }
         }
+        ob_end_clean();
         header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
         header('Content-Disposition: attachment; filename="' . $fname . '"');
         header('Cache-Control: max-age=0');
