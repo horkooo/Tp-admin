@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>地址选择器</title>
+    <meta http-equiv="Content-Type" content="text/html;charset=UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="initial-scale=1.0, user-scalable=no, width=device-width">
+    <link rel="stylesheet" href="__STATIC__/plugs/bootstrap/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="__STATIC__/plugs/awesome/css/font-awesome.min.css" />
+</head>
+<body>
+<style type="text/css">
+    body{
+        margin:0;
+        padding:0;
+        height: 100%;
+        width: 100%;
+        overflow: hidden;
+        font-size: 13px;
+    }
+    #container{
+        position:absolute;
+        left:0;top:0;right:0;bottom:0;
+    }
+    .map {
+        height: 100%;
+        width: 100%;
+    }
+    .confirm{
+        position:absolute;
+        bottom:30px;right:4%;
+        z-index:99;
+        height: 50px;
+        width: 50px;
+        line-height:50px;
+        font-size:15px;
+        text-align:center;
+        background-color:white;
+        background:#1ABC9C;
+        color:white;
+        border:none;
+        cursor:pointer;
+        border-radius: 50%;
+    }
+    #panel {
+        position: absolute;
+        background-color: white;
+        max-height: 90%;
+        overflow-y: auto;
+        top: 10px;
+        right: 10px;
+        width: 280px;
+    }
+    .search {position:absolute;width:400px;top:0;left:50%;padding:5px;margin-left:-200px;}
+</style>
+<div class="search">
+    <div class="input-group">
+        <input type="text" id="place" name="q" class="form-control" placeholder="输入地点" />
+         <span class="input-group-btn">
+             <button type="submit" name="search" id="search-btn" class="btn btn-success">
+                 <i class="fa fa-search"></i>
+             </button>
+         </span>
+    </div>
+    <div id="panel" style="display: none"></div>
+</div>
+<div class="confirm">确定</div>
+<div id="container"  class="map" tabindex="0"></div>
+<script src="__STATIC__/plugs/jquery/jquery.min.js"></script>
+<script type="text/javascript" src='//webapi.amap.com/maps?v=1.4.15&key=b97fe867e61667fc6e7babbf1075388a&plugin=AMap.ToolBar,AMap.Autocomplete,AMap.PlaceSearch,AMap.Geocoder'></script>
+<script src="//webapi.amap.com/ui/1.0/main.js?v=1.0.11"></script>
+<script type="text/javascript">
+    $(function(){
+        var lng,lat,address = '';
+        var geocoder,marker;
+        //瞄点配置
+        var markerIcon = new AMap.Icon({
+            size: new AMap.Size(64, 64),
+            image: '//webapi.amap.com/ui/1.0/ui/misc/PositionPicker/assets/position-picker.png',
+            imageSize: new AMap.Size(31, 31),
+            imageOffset: new AMap.Pixel(0,0)
+        });
+
+        //逆地理位置编码
+        function regeoCode() {
+            if(!geocoder){
+                geocoder = new AMap.Geocoder();
+            }
+            if(!marker){
+                marker = new AMap.Marker({
+                    icon:markerIcon,
+                    offset: new AMap.Pixel(-10,-20),
+                    draggable:true  //描点可以拖动
+                });
+                map.add(marker);
+            }
+            var lnglat = new Array(lng,lat);
+            marker.setPosition(lnglat);
+            map.setCenter(lnglat);
+            geocoder.getAddress(lnglat, function(status, result) {
+                if (status === 'complete'&&result.regeocode) {
+                    address = result.regeocode.formattedAddress;
+                }else{
+                    log.error('根据经纬度查询地址失败')
+                }
+            });
+            //地图瞄点及拖动事件
+            marker.on('dragend',function(e){
+                lng = e.lnglat.lng;
+                lat = e.lnglat.lat;
+                regeoCode();
+            })
+        }
+
+        //地图拖拽选点
+        AMapUI.loadUI(['misc/PositionPicker'], function(PositionPicker) {
+            $('#panel').hide();
+            map = new AMap.Map('container', {
+                zoom: 16,
+                scrollWheel: true
+            })
+            map.panBy(0, 1);
+            map.addControl(new AMap.ToolBar({
+                liteStyle: true
+            }))
+            var positionPicker = new PositionPicker({
+                mode: 'dragMarker',
+                map: map
+            });
+            positionPicker.on('success', function(positionResult) {
+                lng = positionResult.position.lng;
+                lat = positionResult.position.lat;
+                address = positionResult.address;
+            });
+            positionPicker.start();
+
+            //鼠标点击地图任意点获取经纬度
+            map.on('click', function(e) {
+                lng = e.lnglat.lng;
+                lat = e.lnglat.lat;
+                positionPicker.stop();
+                regeoCode();
+            });
+
+            //POI位置搜索
+            $(document).on('click', '#search-btn', function () {
+                if ($("#place").val() == '') {return false;}
+                positionPicker.stop();
+                //执行搜索POI
+                $('#panel').show();
+                AMap.service(["AMap.PlaceSearch"], function() {
+                    //构造地点查询类
+                    var placeSearch = new AMap.PlaceSearch({
+                        pageSize: 5,
+                        pageIndex: 1,
+                        citylimit: true,  //是否强制限制在设置的城市内搜索
+                        map: map,
+                        panel: "panel",
+                        autoFitView: true
+                    });
+                    //关键字查询
+                    placeSearch.search($("#place").val());
+                    placeSearch.on('markerClick',function(e){
+                        lng = e.data.location.lng;
+                        lat = e.data.location.lat;
+                        regeoCode();
+                    })
+                });
+
+            });
+
+
+        });
+
+        var close = function (data) {
+            var index = top.layer.getFrameIndex(window.name);
+            top.$('#lat').map(function () {
+                top.$(this).val(data.lat);
+            });
+            top.$('#lon').map(function () {
+                top.$(this).val(data.lon);
+            });
+            top.$('#address').map(function () {
+                top.$(this).val(data.address);
+            });
+            var callback = top.$("#layui-layer" + index).data("callback");
+            //再执行关闭
+            top.layer.close(index);
+            //再调用回传函数
+            if (typeof callback === 'function') {
+                callback.call(undefined, data);
+            }
+        };
+
+        //点击确定后执行回调赋值
+        $(document).on('click', '.confirm', function () {
+            var zoom = map.getZoom();
+            var data = {lat: lat, lon: lng, zoom: zoom, address: address};
+            close(data);
+        });
+
+    })
+
+</script>
+</body>
+</html>
