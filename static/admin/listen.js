@@ -142,6 +142,17 @@ define(['jquery', 'admin.plugs'], function () {
         }), {boxShadow: 'none'});
     });
 
+    /* !注册data-map 事件行为 */
+    this.$body.on('click','[data-map]',function(){
+        var lat = $("#lat").val();
+        var lon = $("#lon").val();
+        var address = $("#address").val();
+        var url = window.ROOT_URL + '?s=admin/plugs/mapselector';
+        url += (lat && lon && location) ? '?lat=' + lat + '&lon=' + lon + '&location=' + address : '';
+        $.form.iframe(url, '位置选择');
+
+    })
+
     /*! 后台菜单控制初始化 */
     $.menu.listen();
 
