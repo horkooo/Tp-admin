@@ -137,4 +137,20 @@ class Plugs extends BasicAdmin
         return view('', ['field' => $field]);
     }
 
+    /**
+     * 选择地图
+     * @return mixed
+     * @throws \think\Exception
+     * @throws \think\exception\PDOException
+     */
+    public function mapselector()
+    {
+        $get = $this->request->get();
+        $lat = isset($get['lat']) && !empty($get['lat']) ?$get['lat']:'31.23958';
+        $lon = isset($get['lon']) && !empty($get['lon']) ?$get['lon']:'121.49976';
+        $scale = isset($get['scale']) && !empty($get['scale']) ?$get['scale']:'12';
+        $location = isset($get['location']) && !empty($get['location']) ?$get['location']:'东方明珠';
+        return $this->fetch('', ['lat' => $lat, 'lon' => $lon, 'scale' => $scale, 'location' => $location]);
+    }
+
 }
