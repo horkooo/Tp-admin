@@ -53,4 +53,15 @@ class Plugs extends Controller
     {
         return view('', ['title' => '富文本编辑器']);
     }
+
+    /*
+     * 地图选择器
+     */
+    public function mapselector(){
+        return view('',['title'=>"地图选择器"]);
+    }
+
+
+
+
 }
