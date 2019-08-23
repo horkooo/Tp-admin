@@ -1,0 +1,39 @@
+{extend name='extra@admin/content'}
+
+{block name="content"}
+<form onsubmit="return false;" action="{:request()->url()}" data-auto="true" method="post" class='form-horizontal layui-form padding-top-20'>
+    <div class="form-group">
+        <label class="col-sm-2 control-label">店铺地址</label>
+        <div class='col-sm-3'>
+            <input autofocus name="store_address" id="address" value='{$vo.store_address|default=""}' title="请输入 店铺地址" placeholder="请输入 店铺地址" class="layui-input">
+        </div>
+        <div class='col-sm-2'>
+            <input autofocus name="store_lat" id="lat" value='{$vo.store_lat|default=""}' title="请输入 经度" placeholder="请输入 经度" class="layui-input">
+        </div>
+        <div class='col-sm-2'>
+            <input autofocus name="store_lon" id="lon" value='{$vo.store_lon|default=""}' title="请输入 纬度" placeholder="请输入 纬度" class="layui-input">
+        </div>
+        <div class='col-sm-2'>
+            <button type='button' class='layui-btn' data-map>选择定位</button>
+        </div>
+    </div>
+
+    <div class="form-group">
+        <label class="col-sm-2 control-label">店铺介绍</label>
+        <div class='col-sm-8'>
+            <textarea name="store_desc">{$vo.store_desc|default=''}</textarea>
+        </div>
+    </div>
+
+    <div class="col-sm-7 col-sm-offset-2">
+        <div class="layui-form-item text-center">
+            {if empty($vo.create_at)}<input type="hidden" name="create_at" value="{:date('Y-m-d H:i:s')}">{/if}
+            {if !empty($vo.id)}<input type="hidden" name="id" value="{$vo.id}">{/if}
+            <button class="layui-btn" type="submit">保存配置</button>
+            <button class="layui-btn layui-btn-danger" type='button' onclick="window.history.back()">取消编辑</button>
+        </div>
+    </div>
+
+    <script>window.form.render();</script>
+</form>
+{/block}
