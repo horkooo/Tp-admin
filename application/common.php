@@ -341,7 +341,6 @@ function webconf($name, $value = null){
 function addXmlNode($filename,$data,$nodename){
     if(is_array($data) && !empty($data) && is_file($filename) && !empty($nodename)){
         $contents = file_get_contents($filename);
-        //$xml = new SimpleXMLElement($contents);
         $xml = @simplexml_load_string($contents);
         foreach($data as $key=>$value){
             foreach($data[$key] as $k=>$v){
@@ -349,7 +348,6 @@ function addXmlNode($filename,$data,$nodename){
                 $item->addChild($k,$v);
             }
         }
-        $xml->asXML();
         $res = file_put_contents($filename,$xml->asXML());
         return  $res !== false?true:$res;
     }else{
