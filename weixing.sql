@@ -1,16 +1,16 @@
 /*
 Navicat MySQL Data Transfer
 
-Source Server         : 本地
+Source Server         : 本地数据库
 Source Server Version : 50553
-Source Host           : localhost:3306
-Source Database       : weixing
+Source Host           : 127.0.0.1:3306
+Source Database       : www_tpadmin_com
 
 Target Server Type    : MYSQL
 Target Server Version : 50553
 File Encoding         : 65001
 
-Date: 2018-10-19 15:41:25
+Date: 2019-11-13 17:05:03
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -166,11 +166,12 @@ CREATE TABLE `system_log` (
   `content` text NOT NULL COMMENT '操作内容描述',
   `create_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='系统操作日志表';
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8 COMMENT='系统操作日志表';
 
 -- ----------------------------
 -- Records of system_log
 -- ----------------------------
+INSERT INTO `system_log` VALUES ('1', '127.0.0.1', 'admin/login/index', 'admin', '系统管理', '用户登录系统成功', '2019-11-13 17:01:45');
 
 -- ----------------------------
 -- Table structure for system_member
@@ -256,7 +257,7 @@ CREATE TABLE `system_menu` (
   `create_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
   PRIMARY KEY (`id`),
   KEY `index_system_menu_node` (`node`) USING BTREE
-) ENGINE=InnoDB AUTO_INCREMENT=111 DEFAULT CHARSET=utf8 COMMENT='系统菜单表';
+) ENGINE=InnoDB AUTO_INCREMENT=112 DEFAULT CHARSET=utf8 COMMENT='系统菜单表';
 
 -- ----------------------------
 -- Records of system_menu
@@ -299,6 +300,7 @@ INSERT INTO `system_menu` VALUES ('107', '4', '支付管理', '', 'fa fa-cc-payp
 INSERT INTO `system_menu` VALUES ('108', '2', '扩展中心', '', '', '#', '', '_self', '3', '1', '0', '2018-10-16 09:37:23');
 INSERT INTO `system_menu` VALUES ('109', '108', '模块列表', '', 'fa fa-cubes', '/admin/extend/modules', '', '_self', '0', '1', '0', '2018-10-16 09:38:36');
 INSERT INTO `system_menu` VALUES ('110', '108', '插件管理', '', 'fa fa-unlink', '/admin/extend/plugs', '', '_self', '0', '1', '0', '2018-10-16 09:41:09');
+INSERT INTO `system_menu` VALUES ('111', '91', '地图选择器', '', 'fa fa-map-o', '/demo/plugs/mapselector', '', '_self', '0', '1', '0', '2019-11-13 17:04:07');
 
 -- ----------------------------
 -- Table structure for system_modules
@@ -492,7 +494,7 @@ CREATE TABLE `system_user` (
 -- ----------------------------
 -- Records of system_user
 -- ----------------------------
-INSERT INTO `system_user` VALUES ('10000', 'admin', '21232f297a57a5a743894a0e4a801fc3', '22222222', 'sdfsd@Qq.com1', '13888888855', 'dfgsdfgsfd', '27066', '2018-10-19 08:40:15', '1', '301,302,303,304', '0', null, '2015-11-13 15:14:22');
+INSERT INTO `system_user` VALUES ('10000', 'admin', '21232f297a57a5a743894a0e4a801fc3', '22222222', 'sdfsd@Qq.com1', '13888888855', 'dfgsdfgsfd', '27067', '2019-11-13 17:01:45', '1', '301,302,303,304', '0', null, '2015-11-13 15:14:22');
 
 -- ----------------------------
 -- Table structure for wechat_fans
