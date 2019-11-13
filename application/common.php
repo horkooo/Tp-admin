@@ -331,3 +331,33 @@ function webconf($name, $value = null){
     return isset($config[$name]) ? $config[$name] : '';
 }
 
+/*
+ * Xml文件增加节点
+ * @param $filename string 文件名 完整路径ROOT_PATH.filename
+ * @param $data array 追加节点数组
+ * @param $nodename string 节点名称
+ * @return boole
+ */
+function addXmlNode($filename,$data,$nodename){
+    if(is_array($data) && !empty($data) && is_file($filename) && !empty($nodename)){
+        $contents = file_get_contents($filename);
+        //$xml = new SimpleXMLElement($contents);
+        $xml = @simplexml_load_string($contents);
+        foreach($data as $key=>$value){
+            foreach($data[$key] as $k=>$v){
+                $item = $xml->addChild($nodename);
+                $item->addChild($k,$v);
+            }
+        }
+        $xml->asXML();
+        $res = file_put_contents($filename,$xml->asXML());
+        return  $res !== false?true:$res;
+    }else{
+        throw new \think\Exception('Incorrect parameters');
+    }
+
+
+
+
+}
+
