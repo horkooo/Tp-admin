@@ -333,13 +333,13 @@ function webconf($name, $value = null){
 
 /*
  * Xml文件增加节点
- * @param $filename string 文件名 完整路径ROOT_PATH.filename
- * @param $data array 追加节点数组
+ * @param $filename string 文件路径
+ * @param $data array 追加数组
  * @param $nodename string 节点名称
  * @return boole
  */
 function addXmlNode($filename,$data,$nodename){
-    if(is_array($data) && !empty($data) && is_file($filename) && !empty($nodename)){
+    if(is_array($data) && !empty($data) && is_file($filename) && is_string($nodename)){
         $contents = file_get_contents($filename);
         $xml = @simplexml_load_string($contents);
         foreach($data as $key=>$value){
@@ -348,14 +348,16 @@ function addXmlNode($filename,$data,$nodename){
                 $item->addChild($k,$v);
             }
         }
-        $res = file_put_contents($filename,$xml->asXML());
+        $xml->asXML();
+        $xmlDocument = new DOMDocument('1.0');
+        $xmlDocument->preserveWhiteSpace = false;
+        $xmlDocument->formatOutput = true;
+        $xmlDocument->loadXML($xml->asXML(),LIBXML_NOERROR);
+        $res = file_put_contents($filename,$xmlDocument->saveXML());
         return  $res !== false?true:$res;
     }else{
         throw new \think\Exception('Incorrect parameters');
     }
-
-
-
 
 }
 
