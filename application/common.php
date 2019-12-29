@@ -190,7 +190,7 @@ function randStr($len=6,$format='all') {
             $chars='ABCDEFGHIJKMNPQRSTUVWXYZ23456789';
             break;
     }
-    mt_srand((double)microtime()*1000000*getmypid());
+    mt_srand();
     $password="";
     while(strlen($password)<$len)
         $password.=substr($chars,(mt_rand()%strlen($chars)),1);
