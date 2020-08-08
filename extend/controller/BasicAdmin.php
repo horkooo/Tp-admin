@@ -18,6 +18,7 @@ use service\DataService;
 use think\Controller;
 use think\Db;
 use think\db\Query;
+use think\Session;
 
 /**
  * 后台权限基础控制器
@@ -26,7 +27,12 @@ use think\db\Query;
  */
 class BasicAdmin extends Controller
 {
-
+    /*
+     * 初始化Session
+     */
+    protected function _initialize(){
+        Session::init();
+    }
     /**
      * 页面标题
      * @var string
